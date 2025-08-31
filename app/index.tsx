@@ -1,9 +1,11 @@
 import Button from '@/components/Button';
+import { useRouter } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import { Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const { toggleColorScheme, colorScheme } = useColorScheme();
+  const router = useRouter();
   return (
     <SafeAreaView className="flex-1 mx-auto bg-white dark:bg-black">
       <View className="p-8">
@@ -21,7 +23,11 @@ export default function Index() {
           and personalized suggestions to optimize your resume for applicant tracking systems (ATS)
           and recruiters. Stop guessing and start applying with confidence.
         </Text>
-        <Button className="mb-8 rounded-full" text="Get Started" onPress={toggleColorScheme} />
+        <Button
+          className="mb-8 rounded-full"
+          text="Get Started"
+          onPress={() => router.push('./(tabs)')}
+        />
       </View>
     </SafeAreaView>
   );
