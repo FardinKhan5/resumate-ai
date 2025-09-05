@@ -1,11 +1,29 @@
 import Button from '@/components/Button';
-import { useRouter } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
+import { Redirect, useRouter } from 'expo-router';
 import { useColorScheme } from 'nativewind';
-import { Image, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const { toggleColorScheme, colorScheme } = useColorScheme();
   const router = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return (
+      <View className="flex-1 justify-center items-center dark:bg-black">
+        <ActivityIndicator
+          size="large"
+          color={colorScheme == 'dark' ? 'white' : 'black'}
+          className="mt-4"
+        />
+      </View>
+    );
+  }
+
+  if (isSignedIn) {
+    return <Redirect href={'./(tabs)'} />;
+  }
   return (
     <SafeAreaView className="flex-1 mx-auto bg-white dark:bg-black">
       <View className="p-8">
@@ -26,7 +44,7 @@ export default function Index() {
         <Button
           className="mb-8 rounded-full"
           text="Get Started"
-          onPress={() => router.push('./(tabs)')}
+          onPress={() => router.push('/(auth)/sign-up')}
         />
       </View>
     </SafeAreaView>

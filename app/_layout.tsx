@@ -1,3 +1,5 @@
+import { ClerkProvider } from '@clerk/clerk-expo';
+import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
@@ -8,7 +10,9 @@ export default function RootLayout() {
     <>
       <SafeAreaProvider>
         <StatusBar style="auto" />
-        <Stack screenOptions={{ headerShown: false }} />
+        <ClerkProvider tokenCache={tokenCache}>
+          <Stack screenOptions={{ headerShown: false }} />
+        </ClerkProvider>
       </SafeAreaProvider>
     </>
   );
