@@ -1,6 +1,36 @@
 import { v } from 'convex/values';
 import { mutation } from './_generated/server';
 
+export const generateResumeUploadUrl = mutation({
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
+export const getResumeUrl = mutation({
+  args: {
+    storageId: v.id('_storage'),
+  },
+  handler: async (ctx, args) => {
+    return ctx.storage.getUrl(args.storageId);
+  },
+});
+
+export const saveResume = mutation({
+  args: {
+    user: v.string(),
+    fileName: v.string(),
+    resumeUrl: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert('resumes', {
+      user: args.user,
+      fileName: args.fileName,
+      resumeUrl: args.resumeUrl,
+    });
+  },
+});
+
 export const saveReport = mutation({
   args: {
     user: v.string(),
@@ -16,6 +46,6 @@ export const saveReport = mutation({
   },
   handler: async (ctx, args) => {
     const { user } = args;
-    await ctx.db.insert('history', { user, ...args.report });
+    return await ctx.db.insert('history', { user, ...args.report });
   },
 });
