@@ -46,13 +46,13 @@ export default function generating() {
               }),
             });
             const data = await res.json();
-            const reportId = await saveReport({ user: user.id, report: data.result });
+            const reportId = await saveReport({ resume, user: user.id, report: data.result });
             router.push({ pathname: './report', params: { id: reportId } });
           }
         }
       } catch (error) {
         console.error(error);
-        router.replace('./index');
+        router.replace('./');
       }
     };
     if (isLoaded) {

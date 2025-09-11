@@ -33,6 +33,7 @@ export const saveResume = mutation({
 
 export const saveReport = mutation({
   args: {
+    resume: v.id('resumes'),
     user: v.string(),
     report: v.object({
       overall_score: v.number(),
@@ -45,14 +46,14 @@ export const saveReport = mutation({
     }),
   },
   handler: async (ctx, args) => {
-    const { user } = args;
-    return await ctx.db.insert('history', { user, ...args.report });
+    const { resume, user, report } = args;
+    return await ctx.db.insert('reports', { resume, user, ...report });
   },
 });
 
 export const getReport = query({
   args: {
-    reportId: v.id('history'),
+    reportId: v.id('reports'),
   },
   handler: async (ctx, args) => {
     const report = await ctx.db.get(args.reportId);
