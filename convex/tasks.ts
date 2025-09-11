@@ -1,5 +1,5 @@
 import { v } from 'convex/values';
-import { mutation } from './_generated/server';
+import { mutation, query } from './_generated/server';
 
 export const generateResumeUploadUrl = mutation({
   handler: async (ctx) => {
@@ -47,5 +47,15 @@ export const saveReport = mutation({
   handler: async (ctx, args) => {
     const { user } = args;
     return await ctx.db.insert('history', { user, ...args.report });
+  },
+});
+
+export const getReport = query({
+  args: {
+    reportId: v.id('history'),
+  },
+  handler: async (ctx, args) => {
+    const report = await ctx.db.get(args.reportId);
+    return report;
   },
 });

@@ -1,8 +1,9 @@
 import Button from '@/components/Button';
+import Loader from '@/components/Loader';
 import { useAuth } from '@clerk/clerk-expo';
 import { Redirect, useRouter } from 'expo-router';
 import { useColorScheme } from 'nativewind';
-import { ActivityIndicator, Image, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const { toggleColorScheme, colorScheme } = useColorScheme();
@@ -10,15 +11,7 @@ export default function Index() {
   const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
-    return (
-      <View className="flex-1 justify-center items-center dark:bg-black">
-        <ActivityIndicator
-          size="large"
-          color={colorScheme == 'dark' ? 'white' : 'black'}
-          className="mt-4"
-        />
-      </View>
-    );
+    return <Loader />;
   }
 
   if (isSignedIn) {

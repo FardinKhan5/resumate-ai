@@ -1,4 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Octicons from '@expo/vector-icons/Octicons';
 import { Tabs } from 'expo-router';
 import { useColorScheme } from 'nativewind';
@@ -47,6 +49,27 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: (props) => {
             return <Feather name="user" size={24} color={props.color} />;
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="report"
+        options={{
+          href: null,
+          title: 'report',
+          tabBarIcon: (props) => {
+            return <FontAwesome6 name="newspaper" size={24} color="black" />;
+          },
+        }}
+      />
+
+      <Tabs.Screen
+        name="generating"
+        options={{
+          href: null,
+          title: 'generating',
+          tabBarIcon: (props) => {
+            return <FontAwesome name="gears" size={24} color="black" />;
           },
         }}
       />
