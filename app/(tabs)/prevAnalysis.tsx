@@ -9,9 +9,9 @@ import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function report() {
-  const { id } = useLocalSearchParams();
-  const reportId = Array.isArray(id) ? id[0] : id;
-  const report = useQuery(api.tasks.getReport, { reportId: reportId as Id<'reports'> });
+  const { resumeId } = useLocalSearchParams();
+  const resume_id = Array.isArray(resumeId) ? resumeId[0] : resumeId;
+  const report = useQuery(api.tasks.getReportOfResume, { resumeId: resume_id as Id<'resumes'> });
   const saveReport = useMutation(api.tasks.saveReport);
   const { user, isLoaded } = useUser();
 
@@ -26,7 +26,6 @@ export default function report() {
       </View>
     );
   }
-
   const {
     overall_score,
     quick_verdict,
@@ -35,7 +34,7 @@ export default function report() {
     section_breakdown,
     recommendations,
     motivational_message,
-  } = report;
+  } = report[0];
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50 dark:bg-black">

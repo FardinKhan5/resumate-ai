@@ -48,6 +48,7 @@ export default function generating() {
             });
             const data = await res.json();
             const reportId = await saveReport({ resume, user: user.id, report: data.result });
+
             router.push({ pathname: './report', params: { id: reportId } });
           }
         }

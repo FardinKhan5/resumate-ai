@@ -73,6 +73,16 @@ export default function TabLayout() {
           },
         }}
       />
+      <Tabs.Screen
+        name="prevAnalysis"
+        options={{
+          href: null,
+          title: 'generating',
+          tabBarIcon: (props) => {
+            return <FontAwesome name="gears" size={24} color="black" />;
+          },
+        }}
+      />
     </Tabs>
   );
 }

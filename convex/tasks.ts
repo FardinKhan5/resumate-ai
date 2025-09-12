@@ -60,3 +60,29 @@ export const getReport = query({
     return report;
   },
 });
+
+export const getResumes = query({
+  args: {
+    user: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const resumes = await ctx.db
+      .query('resumes')
+      .filter((q) => q.eq(q.field('user'), args.user))
+      .take(100);
+    return resumes;
+  },
+});
+
+export const getReportOfResume = query({
+  args: {
+    resumeId: v.id('resumes'),
+  },
+  handler: async (ctx, args) => {
+    const report = await ctx.db
+      .query('reports')
+      .filter((q) => q.eq(q.field('resume'), args.resumeId))
+      .take(1);
+    return report;
+  },
+});
