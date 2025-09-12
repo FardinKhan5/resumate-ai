@@ -18,5 +18,5 @@ export const SignOutButton = () => {
       console.error(JSON.stringify(err, null, 2));
     }
   };
-  return <Button text="Sign out" onPress={handleSignOut} />;
+  return <Button className="w-full" text="Sign out" onPress={handleSignOut} />;
 };

@@ -43,7 +43,7 @@ export default function Home() {
         <Image
           source={require('./../../assets/gif/homePage.gif')}
           contentFit="contain"
-          style={{ height: 300, width: '100%', backgroundColor: '#000' }}
+          style={{ height: 300, width: '100%' }}
         />
 
         <Text className="text-center text-xl font-bold dark:text-white">

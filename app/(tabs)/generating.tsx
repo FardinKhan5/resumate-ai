@@ -4,7 +4,8 @@ import { useMutation } from 'convex/react';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function generating() {
   const generateResumeUploadUrl = useMutation(api.tasks.generateResumeUploadUrl);
   const getResumeUrl = useMutation(api.tasks.getResumeUrl);
@@ -61,12 +62,21 @@ export default function generating() {
   }, [resumeUri, mimeType, fileName, user]);
 
   return (
-    <View className="flex-1 justify-center items-center dark:bg-black">
-      <Image
-        source={require('./../../assets/gif/analyzing.gif')}
-        contentFit="contain"
-        style={{ flex: 1, width: '100%', backgroundColor: '#000' }}
-      />
-    </View>
+    <SafeAreaView className="flex-1 p-6 dark:bg-black">
+      <Text className="text-2xl font-bold dark:text-white">Resumate AI</Text>
+      <View className="flex-1 justify-center items-center">
+        <Image
+          source={require('./../../assets/gif/analyzing.gif')}
+          contentFit="cover"
+          style={{ width: 250, height: 250 }}
+        />
+        <Text className="text-black text-2xl font-bold mt-8 text-center dark:text-white">
+          Analyzing Your Resume...
+        </Text>
+        <Text className="text-gray-400 text-base mt-2 text-center">
+          This may take a moment while our AI reviews your document.
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
