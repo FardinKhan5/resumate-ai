@@ -10,7 +10,11 @@ export default function Loader() {
       <Image
         source={require('./../assets/gif/load-32_256.gif')}
         contentFit="scale-down"
-        style={{ flex: 1, width: '100%', backgroundColor: '#000' }}
+        style={{
+          flex: 1,
+          width: '100%',
+          backgroundColor: `${colorScheme == 'dark' ? '#000' : '#fff'}`,
+        }}
       />
       {/* <ActivityIndicator
         size="large"

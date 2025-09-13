@@ -1,5 +1,6 @@
-import { useClerk } from '@clerk/clerk-expo';
+import { isClerkAPIResponseError, useClerk } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
+import { Alert } from 'react-native';
 import Button from './Button';
 
 export const SignOutButton = () => {
@@ -15,7 +16,11 @@ export const SignOutButton = () => {
     } catch (err) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      if (isClerkAPIResponseError(err)) {
+        Alert.alert(err.message);
+      } else {
+        console.error(JSON.stringify(err, null, 2));
+      }
     }
   };
   return <Button className="w-full" text="Sign out" onPress={handleSignOut} />;

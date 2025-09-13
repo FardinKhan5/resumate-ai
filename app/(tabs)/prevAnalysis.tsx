@@ -1,8 +1,8 @@
+import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { useUser } from '@clerk/clerk-expo';
 import { useMutation, useQuery } from 'convex/react';
-import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -16,15 +16,7 @@ export default function report() {
   const { user, isLoaded } = useUser();
 
   if (!isLoaded || !report) {
-    return (
-      <View className="flex-1 justify-center items-center dark:bg-black">
-        <Image
-          source={require('./../../assets/gif/analyzing.gif')}
-          contentFit="contain"
-          style={{ flex: 1, width: '100%', backgroundColor: '#000' }}
-        />
-      </View>
-    );
+    return <Loader />;
   }
   const {
     overall_score,
@@ -37,11 +29,12 @@ export default function report() {
   } = report[0];
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-black">
+    <SafeAreaView edges={['top']} className="flex-1 bg-slate-50 dark:bg-black">
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         automaticallyAdjustContentInsets={true}
-        className="flex-1 px-4 pt-6">
+        showsVerticalScrollIndicator={false}
+        className="flex-1 px-4 pt-6 pb-0">
         {/* Header and Score Section */}
         <View className="items-center mb-8 mt-4">
           <View className="w-40 h-40 rounded-full bg-blue-600 justify-center items-center shadow-lg">

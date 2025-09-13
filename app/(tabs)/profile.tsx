@@ -1,5 +1,6 @@
 import { SignOutButton } from '@/components/SignOutButton';
 import { isClerkAPIResponseError, useUser } from '@clerk/clerk-expo';
+import Feather from '@expo/vector-icons/Feather';
 import { useColorScheme } from 'nativewind';
 import React, { useState } from 'react';
 import {
@@ -17,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
   const { user, isLoaded } = useUser();
-  const { colorScheme } = useColorScheme();
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -103,7 +104,7 @@ export default function Profile() {
 
     setLoading(true);
     try {
-      await user?.updatePassword({ currentPassword, newPassword, signOutOfOtherSessions: true });
+      await user?.updatePassword({ currentPassword, newPassword });
       Alert.alert('Success', 'Your password has been updated!');
       setCurrentPassword('');
       setNewPassword('');
@@ -124,8 +125,24 @@ export default function Profile() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100 dark:bg-black">
-      <ScrollView className="flex-1 px-4 py-6">
+    <SafeAreaView edges={['top']} className="flex-1 px-4 bg-gray-100 dark:bg-black">
+      <View className="flex-row justify-between items-center py-6">
+        <Text className="text-2xl font-bold text-black dark:text-white">Profile Settings</Text>
+        <TouchableOpacity onPress={toggleColorScheme}>
+          <Text className="text-black dark:text-white">
+            {colorScheme == 'light' ? (
+              <Feather name="sun" size={24} color="black" />
+            ) : (
+              <Feather name="moon" size={24} color="white" />
+            )}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        automaticallyAdjustContentInsets={true}
+        showsVerticalScrollIndicator={false}
+        className="flex-1 px-4 py-6">
         {/* Profile Header */}
         <View className="flex-col items-center justify-center mb-8">
           <View className="w-24 h-24 rounded-full overflow-hidden border-4 bg-blue-500 justify-center items-center">

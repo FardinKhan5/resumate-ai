@@ -37,8 +37,8 @@ export default function Home() {
     return <Loader />;
   }
   return (
-    <SafeAreaView className="flex-1 p-6 dark:bg-black">
-      <Text className="text-2xl font-bold dark:text-white">Resumate AI</Text>
+    <SafeAreaView edges={['top']} className="flex-1 px-4 dark:bg-black">
+      <Text className="text-2xl pt-6 font-bold dark:text-white">Resumate AI</Text>
       <View className="flex-1 items-center justify-center">
         <Image
           source={require('./../../assets/gif/homePage.gif')}

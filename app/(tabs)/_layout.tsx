@@ -77,7 +77,7 @@ export default function TabLayout() {
         name="prevAnalysis"
         options={{
           href: null,
-          title: 'generating',
+          title: 'analysis',
           tabBarIcon: (props) => {
             return <FontAwesome name="gears" size={24} color="black" />;
           },

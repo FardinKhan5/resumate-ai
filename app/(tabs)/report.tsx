@@ -1,9 +1,10 @@
+import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { useUser } from '@clerk/clerk-expo';
 import { useMutation, useQuery } from 'convex/react';
-import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
+import { useColorScheme } from 'nativewind';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,17 +15,9 @@ export default function report() {
   const report = useQuery(api.tasks.getReport, { reportId: reportId as Id<'reports'> });
   const saveReport = useMutation(api.tasks.saveReport);
   const { user, isLoaded } = useUser();
-
+  const { colorScheme } = useColorScheme();
   if (!isLoaded || !report) {
-    return (
-      <View className="flex-1 justify-center items-center dark:bg-black">
-        <Image
-          source={require('./../../assets/gif/analyzing.gif')}
-          contentFit="contain"
-          style={{ flex: 1, width: '100%', backgroundColor: '#000' }}
-        />
-      </View>
-    );
+    return <Loader />;
   }
 
   const {
@@ -38,10 +31,11 @@ export default function report() {
   } = report;
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-black">
+    <SafeAreaView edges={['top']} className="flex-1 bg-slate-50 dark:bg-black">
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         automaticallyAdjustContentInsets={true}
+        showsVerticalScrollIndicator={false}
         className="flex-1 px-4 pt-6">
         {/* Header and Score Section */}
         <View className="items-center mb-8 mt-4">

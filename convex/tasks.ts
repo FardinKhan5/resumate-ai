@@ -69,6 +69,7 @@ export const getResumes = query({
     const resumes = await ctx.db
       .query('resumes')
       .filter((q) => q.eq(q.field('user'), args.user))
+      .order('desc')
       .take(100);
     return resumes;
   },

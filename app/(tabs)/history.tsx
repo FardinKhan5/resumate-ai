@@ -6,7 +6,8 @@ import { useQuery } from 'convex/react';
 import { useRouter } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function History() {
   const { user, isLoaded } = useUser();
@@ -42,11 +43,42 @@ export default function History() {
   };
 
   return (
-    <SafeAreaView className="flex-1 pt-28 px-4 pb-4 bg-gray-100 dark:bg-black">
+    <SafeAreaView edges={['top']} className="flex-1 px-4 pt-6 bg-gray-100 dark:bg-black">
       <Text className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
         Analysis History
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={resumes}
+        renderItem={(resume) => {
+          return (
+            <View className="flex-1 flex-row justify-between my-2 p-4 gap-2 rounded-lg bg-slate-50 border-2 border-black dark:bg-gray-900 dark:border-white">
+              <TouchableOpacity className="flex-1" onPress={() => handlePress(resume.item._id)}>
+                <View className="flex-1 flex-col gap-4">
+                  <Text className="text-black font-medium dark:text-white">
+                    {resume.item.fileName}
+                  </Text>
+                  <Text className="text-black font-medium dark:text-white">
+                    {new Date(resume.item._creationTime).toLocaleString()}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="bg-blue-500 h-12 px-4 py-2 text-center"
+                onPress={(e) =>
+                  router.push({
+                    pathname: './../(viewPdf)/',
+                    params: { uri: resume.item.resumeUrl, fileName: resume.item.fileName },
+                  })
+                }>
+                <Text className="text-white">View</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }}
+        keyExtractor={(resume) => resume._id}
+      />
+      {/* <ScrollView showsVerticalScrollIndicator={false}>
         {resumes.map((item) => (
           <TouchableOpacity
             key={item._id}
@@ -60,9 +92,12 @@ export default function History() {
                 {new Date(item._creationTime).toLocaleDateString()}
               </Text>
             </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+            <View>
+              <Text>File</Text>
+            </View>
+          </TouchableOpacity> */}
+      {/* ))}
+      </ScrollView> */}
     </SafeAreaView>
   );
 }
