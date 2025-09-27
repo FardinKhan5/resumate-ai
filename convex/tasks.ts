@@ -21,12 +21,19 @@ export const saveResume = mutation({
     user: v.string(),
     fileName: v.string(),
     resumeUrl: v.string(),
+    usedFor: v.union(
+      v.literal('none'),
+      v.literal('Resume Review'),
+      v.literal('Job-Fit Analysis'),
+      v.literal('Interview Prep')
+    ),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert('resumes', {
       user: args.user,
       fileName: args.fileName,
       resumeUrl: args.resumeUrl,
+      usedFor: args.usedFor,
     });
   },
 });
@@ -75,7 +82,7 @@ export const getResumes = query({
   },
 });
 
-export const getReportOfResume = query({
+export const getReportIdByResume = mutation({
   args: {
     resumeId: v.id('resumes'),
   },
@@ -84,6 +91,106 @@ export const getReportOfResume = query({
       .query('reports')
       .filter((q) => q.eq(q.field('resume'), args.resumeId))
       .take(1);
-    return report;
+    return report[0]._id;
+  },
+});
+
+export const saveJobFitReport = mutation({
+  args: {
+    resume: v.id('resumes'),
+    user: v.string(),
+    overallScore: v.number(),
+    jobMatchScore: v.number(),
+    summary: v.object({
+      positive: v.string(),
+      improvement: v.string(),
+    }),
+    detailedAnalysis: v.array(
+      v.object({
+        category: v.string(),
+        title: v.string(),
+        score: v.number(),
+        feedback: v.string(),
+        suggestions: v.array(v.string()),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    const { resume, user, overallScore, jobMatchScore, summary, detailedAnalysis } = args;
+    return await ctx.db.insert('jobFitReports', {
+      resume,
+      user,
+      overallScore,
+      jobMatchScore,
+      summary,
+      detailedAnalysis,
+    });
+  },
+});
+
+export const getJobFitReport = query({
+  args: {
+    reportId: v.id('jobFitReports'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.reportId);
+  },
+});
+
+export const getJobFitReportIdByResume = mutation({
+  args: {
+    resumeId: v.id('resumes'),
+  },
+  handler: async (ctx, args) => {
+    const report = await ctx.db
+      .query('jobFitReports')
+      .filter((q) => q.eq(q.field('resume'), args.resumeId))
+      .take(1);
+    return report.length > 0 ? report[0]._id : null;
+  },
+});
+
+export const saveInterviewPrepQuestions = mutation({
+  args: {
+    resume: v.id('resumes'),
+    user: v.string(),
+    general_questions: v.array(v.string()),
+    technical_questions: v.array(v.string()),
+    behavioral_questions: v.array(v.string()),
+    tips: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const { resume, user, general_questions, technical_questions, behavioral_questions, tips } =
+      args;
+    return await ctx.db.insert('interviewPrep', {
+      resume,
+      user,
+      general_questions,
+      technical_questions,
+      behavioral_questions,
+      tips,
+    });
+  },
+});
+
+export const getInterviewPrepQuestions = query({
+  args: {
+    interviewPrepId: v.id('interviewPrep'),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.interviewPrepId);
+  },
+});
+
+export const getInterviewPrepIdByResume = mutation({
+  args: {
+    resumeId: v.id('resumes'),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query('interviewPrep')
+      .filter((q) => q.eq(q.field('resume'), args.resumeId))
+      .take(1);
+    return result.length > 0 ? result[0]._id : null;
   },
 });

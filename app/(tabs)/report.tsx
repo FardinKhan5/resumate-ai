@@ -31,7 +31,8 @@ export default function report() {
   } = report;
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-slate-50 dark:bg-black">
+    <SafeAreaView edges={['top']} className="flex-1 px-4 bg-slate-50 dark:bg-black">
+      <Text className="text-2xl font-bold text-gray-800 dark:text-white my-6">Resume Review</Text>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         automaticallyAdjustContentInsets={true}

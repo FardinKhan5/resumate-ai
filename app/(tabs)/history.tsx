@@ -2,7 +2,7 @@ import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { useUser } from '@clerk/clerk-expo';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { useRouter } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
@@ -10,6 +10,9 @@ import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function History() {
+  const getReportIdByResume = useMutation(api.tasks.getReportIdByResume);
+  const getJobFitReportIdByResume = useMutation(api.tasks.getJobFitReportIdByResume);
+  const getInterviewPrepIdByResume = useMutation(api.tasks.getInterviewPrepIdByResume);
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const { colorScheme } = useColorScheme();
@@ -38,8 +41,19 @@ export default function History() {
   }
 
   // Handle the press event to navigate to the report page
-  const handlePress = (id: Id<'resumes'>) => {
-    router.push({ pathname: './prevAnalysis', params: { resumeId: id } });
+  const handlePress = async (id: Id<'resumes'>, usedFor: string) => {
+    if (usedFor == 'Resume Review') {
+      const reportId = await getReportIdByResume({ resumeId: id as Id<'resumes'> });
+      router.push({ pathname: './report', params: { id: reportId } });
+    } else if (usedFor == 'Job-Fit Analysis') {
+      const jobFitReportId = await getJobFitReportIdByResume({ resumeId: id as Id<'resumes'> });
+      router.push({ pathname: './JobDescReport', params: { jobFitReportId } });
+    } else if (usedFor == 'Interview Prep') {
+      const interviewPrepQuestionsId = await getInterviewPrepIdByResume({
+        resumeId: id as Id<'resumes'>,
+      });
+      router.push({ pathname: './interviewPrepQuestions', params: { interviewPrepQuestionsId } });
+    }
   };
 
   return (
@@ -53,7 +67,9 @@ export default function History() {
         renderItem={(resume) => {
           return (
             <View className="flex-1 flex-row justify-between my-2 p-4 gap-2 rounded-lg bg-slate-50 border-2 border-black dark:bg-gray-900 dark:border-white">
-              <TouchableOpacity className="flex-1" onPress={() => handlePress(resume.item._id)}>
+              <TouchableOpacity
+                className="flex-1"
+                onPress={() => handlePress(resume.item._id, resume.item.usedFor)}>
                 <View className="flex-1 flex-col gap-4">
                   <Text className="text-black font-medium dark:text-white">
                     {resume.item.fileName}

@@ -83,6 +83,24 @@ export default function TabLayout() {
           },
         }}
       />
+      <Tabs.Screen
+        name="featureSelection"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="JobDescReport"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="interviewPrepQuestions"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

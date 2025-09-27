@@ -27,7 +27,7 @@ export default function Home() {
         const resumeUri = resume.assets[0].uri;
         const mimeType = resume.assets[0].mimeType;
         const fileName = resume.assets[0].name;
-        router.push({ pathname: './generating', params: { resumeUri, mimeType, fileName } });
+        router.push({ pathname: './featureSelection', params: { resumeUri, mimeType, fileName } });
       }
     } catch (error) {
       console.error(error);
